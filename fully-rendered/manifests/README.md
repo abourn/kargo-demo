@@ -1,0 +1,1 @@
+Fully rendered manifests produced by Kargo will appear here.

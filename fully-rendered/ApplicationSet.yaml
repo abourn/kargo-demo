@@ -1,0 +1,29 @@
+apiVersion: argoproj.io/v1alpha1
+kind: ApplicationSet
+metadata:
+  name: guestbook
+  namespace: argocd
+spec:
+  goTemplate: true
+  goTemplateOptions: ["missingkey=error"]
+  generators:
+    # Alternatively, we could use the git directory generator here intead
+    - list:
+        elements:
+          - env: dev
+          - env: critical
+  template:
+    metadata:
+      name: guestbook-{{ .env }}
+    spec:
+      project: default
+      source:
+        repoURL: https://github.com/abourn/kargo-demo.git
+        targetRevision: stage/{{ .env }}
+        path: fully-rendered/manifests/guestbook-{{ .env }}
+      destination:
+        namespace: guestbook-{{ .env }}
+        server: https://kubernetes.default.svc
+      syncPolicy:
+        syncOptions:
+          - CreateNamespace=true
