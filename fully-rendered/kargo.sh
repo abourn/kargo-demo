@@ -1,3 +1,4 @@
+cat <<EOF | kubectl apply -f -
 apiVersion: kargo.akuity.io/v1alpha1
 kind: Project
 metadata:
@@ -8,7 +9,7 @@ kind: Secret
 type: Opaque
 metadata:
   name: kargo-demo-repo
-  namespace: kargo-demo
+  namespace: fully-rendered
   labels:
     kargo.akuity.io/cred-type: git
 stringData:
@@ -20,7 +21,7 @@ apiVersion: kargo.akuity.io/v1alpha1
 kind: Warehouse
 metadata:
   name: fully-rendered
-  namespace: kargo-demo
+  namespace: fully-rendered
 spec:
   subscriptions:
   - image:
@@ -32,7 +33,7 @@ apiVersion: kargo.akuity.io/v1alpha1
 kind: PromotionTask
 metadata:
   name: fully-rendered-promo-process
-  namespace: kargo-demo
+  namespace: fully-rendered
 spec:
   vars:
   - name: gitopsRepo
@@ -53,6 +54,7 @@ spec:
     config:
       path: ./out
   - uses: yaml-update
+    as: update
     config:
       path: ./src/fully-rendered/values/\${{ ctx.stage }}/values.yaml
       updates:
@@ -61,7 +63,7 @@ spec:
   - uses: helm-template
     config:
       path: ./src/fully-rendered/charts/helm-guestbook
-      outPath: ./src/fully-rendered/manifests
+      outPath: ./out/fully-rendered/manifests      
       releaseName: guestbook-\${{ ctx.stage }}
       useReleaseName: true
       valuesFiles:
@@ -86,7 +88,7 @@ apiVersion: kargo.akuity.io/v1alpha1
 kind: Stage
 metadata:
   name: dev
-  namespace: kargo-demo
+  namespace: fully-rendered
 spec:
   requestedFreight:
   - origin:
@@ -105,7 +107,7 @@ apiVersion: kargo.akuity.io/v1alpha1
 kind: Stage
 metadata:
   name: critical
-  namespace: kargo-demo
+  namespace: fully-rendered
 spec:
   requestedFreight:
   - origin:
@@ -120,3 +122,4 @@ spec:
       - task:
           name: fully-rendered-promo-process
         as: promo-process
+EOF

@@ -15,12 +15,14 @@ spec:
   template:
     metadata:
       name: guestbook-{{ .env }}
+      annotations:
+        kargo.akuity.io/authorized-stage: "fully-rendered:{{ .env }}"
     spec:
       project: default
       source:
         repoURL: https://github.com/abourn/kargo-demo.git
         targetRevision: stage/{{ .env }}
-        path: fully-rendered/manifests/guestbook-{{ .env }}
+        path: fully-rendered/manifests/guestbook-{{ .env }}/helm-guestbook/templates
       destination:
         namespace: guestbook-{{ .env }}
         server: https://kubernetes.default.svc
