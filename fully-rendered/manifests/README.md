@@ -1,1 +1,1 @@
-Fully rendered manifests produced by Kargo will appear here.
+Fully rendered manifests produced by Kargo will appear in this directory on stage branches.
