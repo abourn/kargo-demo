@@ -18,7 +18,7 @@ Then, you'll deploy the Kargo resources to implement a promotion pipeline for th
 
 Once the ApplicationSet and Kargo resources are deployed, you can begin promoting the image `Freight` to the various `Stages` (`dev` and `critical`).
 
-The `PromotionTask` for this example is centered around the `helm-template` promotion step.  In particular, this step takes the `Freight` for the gb-frontend image and inflates the [`./fully-rendered/charts/helm-guestbook`](./fully-rendered/charts/helm-guestbook) Helm Chart with the `image.tag` value set to the image tag being promoted.  The `PromotionTask` then commits the rendered manifests to GitHub on the staging branch and triggers a sync of the corresponding ArgoCD Application.
+The `PromotionTask` for this example is centered around the `helm-template` promotion step.  In particular, this step takes the updated `Freight` from the `Warehouse` for the gb-frontend image and inflates the [`./fully-rendered/charts/helm-guestbook`](./fully-rendered/charts/helm-guestbook) Helm Chart with the `image.tag` value set to the `Freight`/image tag being promoted.  The `PromotionTask` then commits the rendered manifests to GitHub on the staging branch and triggers a sync of the corresponding ArgoCD Application.
 
 ## Teardown
 
