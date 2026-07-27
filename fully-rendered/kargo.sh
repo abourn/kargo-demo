@@ -52,27 +52,21 @@ spec:
         path: ./out
   - uses: git-clear
     config:
-      path: ./out
-  - uses: yaml-update
-    as: update
-    config:
-      path: ./src/fully-rendered/values/\${{ ctx.stage }}/values.yaml
-      updates:
-        - key: image.tag
-          value: \${{ imageFrom(vars.imageRepo).Tag }}  
+      path: ./out  
   - uses: helm-template
     config:
       path: ./src/fully-rendered/charts/helm-guestbook
       outPath: ./out/fully-rendered/manifests      
       releaseName: guestbook-\${{ ctx.stage }}
       useReleaseName: true
-      valuesFiles:
-        - ./src/fully-rendered/values/\${{ ctx.stage }}/values.yaml
+      setValues:
+        - key: image.tag
+          value: \${{ imageFrom(vars.imageRepo).Tag }} 
   - uses: git-commit
     as: commit
     config:
       path: ./out
-      message: \${{ task.outputs.update.commitMessage }}
+      message: "Update image to \${{ imageFrom(vars.imageRepo).Tag }}"
   - uses: git-push
     config:
       path: ./out
