@@ -1,0 +1,42 @@
+---
+# Source: helm-guestbook/templates/deployment.yaml
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: guestbook-production-helm-guestbook
+  labels:
+    app: helm-guestbook
+    chart: helm-guestbook-0.1.0
+    release: guestbook-production
+    heritage: Helm
+spec:
+  replicas: 1
+  revisionHistoryLimit: 3
+  selector:
+    matchLabels:
+      app: helm-guestbook
+      release: guestbook-production
+  template:
+    metadata:
+      labels:
+        app: helm-guestbook
+        release: guestbook-production
+    spec:
+      containers:
+        - name: helm-guestbook
+          image: "gcr.io/google-samples/gb-frontend:v5"
+          imagePullPolicy: IfNotPresent
+          ports:
+            - name: http
+              containerPort: 80
+              protocol: TCP
+          livenessProbe:
+            httpGet:
+              path: /
+              port: http
+          readinessProbe:
+            httpGet:
+              path: /
+              port: http
+          resources:
+            {}

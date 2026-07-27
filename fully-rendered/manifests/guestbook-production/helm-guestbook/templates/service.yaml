@@ -1,0 +1,21 @@
+---
+# Source: helm-guestbook/templates/service.yaml
+apiVersion: v1
+kind: Service
+metadata:
+  name: guestbook-production-helm-guestbook
+  labels:
+    app: helm-guestbook
+    chart: helm-guestbook-0.1.0
+    release: guestbook-production
+    heritage: Helm
+spec:
+  type: ClusterIP
+  ports:
+    - port: 80
+      targetPort: http
+      protocol: TCP
+      name: http
+  selector:
+    app: helm-guestbook
+    release: guestbook-production
