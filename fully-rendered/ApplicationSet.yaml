@@ -10,8 +10,8 @@ spec:
     # Alternatively, we could use the git directory generator here intead
     - list:
         elements:
-          - env: dev
-          - env: critical
+          - env: staging
+          - env: production
   template:
     metadata:
       name: guestbook-{{ .env }}

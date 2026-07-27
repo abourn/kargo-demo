@@ -16,7 +16,7 @@ To deploy this example, first create the ApplicationSet at [`./fully-rendered/Ap
 
 Then, you'll deploy the Kargo resources to implement a promotion pipeline for the Deployment's image tag. These resources can be deployed with the [`./fully-rendered/kargo.sh`](./fully-rendered/kargo.sh) script. These resources are applied with a script in order to substitute environment variables into the manifests. This script assumes that you have `GITOPS_REPO_URL`, `GITHUB_USERNAME`, and `GITHUB_PAT` set in your environment.
 
-Once the ApplicationSet and Kargo resources are deployed, you can begin promoting the image `Freight` to the various `Stages` (`dev` and `critical`).
+Once the ApplicationSet and Kargo resources are deployed, you can begin promoting the image `Freight` to the various `Stages` (`staging` and `production`).
 
 The `PromotionTask` for this example is centered around the `helm-template` promotion step.  In particular, this step takes the updated `Freight` from the `Warehouse` for the gb-frontend image and inflates the [`./fully-rendered/charts/helm-guestbook`](./fully-rendered/charts/helm-guestbook) Helm Chart with the `image.tag` value set to the `Freight`/image tag being promoted.  The `PromotionTask` then commits the rendered manifests to GitHub on the staging branch and triggers a sync of the corresponding ArgoCD Application.
 

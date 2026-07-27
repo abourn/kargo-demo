@@ -81,7 +81,7 @@ spec:
 apiVersion: kargo.akuity.io/v1alpha1
 kind: Stage
 metadata:
-  name: dev
+  name: staging
   namespace: fully-rendered
 spec:
   requestedFreight:
@@ -100,7 +100,7 @@ spec:
 apiVersion: kargo.akuity.io/v1alpha1
 kind: Stage
 metadata:
-  name: critical
+  name: production
   namespace: fully-rendered
 spec:
   requestedFreight:
@@ -109,7 +109,7 @@ spec:
       name: fully-rendered
     sources:
       stages:
-      - dev
+      - staging
   promotionTemplate:
     spec:
       steps:
